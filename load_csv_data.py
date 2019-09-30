@@ -33,17 +33,17 @@ def load_time_series(filename='household_power_consumption.txt', test_size=0.2, 
         else:
             i = 0
             for row in line:
-                if i > 10000: break
+                if i > 100000: break
                 data.append(row)
                 i += 1
 
     data = np.array(data)
     data = data[:, 2:] # delete non metric columns
-    # print(np.count_nonzero(data == '?')) # print if there are '?'
-    # print(np.count_nonzero(data == '')) # print if there are ''
     data[data == '?'] = 0 # replace non-metric values
     data[data == ''] = 0 # replace non-metric values
     data = data.astype(np.float16) # cast
+
+    # Normalize for each column at here if necessary
 
     new_data, new_label = [], []
     for i in range(len(data) - maxlen):
@@ -55,11 +55,6 @@ def load_time_series(filename='household_power_consumption.txt', test_size=0.2, 
 
     # Split those data to train and validation sets
     X_train, X_test, y_train, y_test = train_test_split(new_data, new_label, test_size=test_size, shuffle=False)
-    # # Reshape to fit to the model
-    # X_train = np.array(X_train).reshape(len(X_train), 1, data.shape[1]) # step = 1
-    # X_test = np.array(X_test).reshape(len(X_test),1, data.shape[1])
-    # y_train = np.array(y_train).reshape(len(y_train), 1)
-    # y_test = np.array(y_test).reshape(len(y_test), 1)
 
     print('Data specification:')
     print('  - (x_train, y_train) = ({}, {})'.format(len(X_train), len(y_train)))

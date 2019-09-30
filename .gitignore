@@ -1,0 +1,8 @@
+.DS_Store
+
+*.pyc
+*.zip
+*.pdf
+
+household_power_consumption.txt
+
